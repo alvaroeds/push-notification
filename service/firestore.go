@@ -3,8 +3,8 @@ package service
 import (
 	"cloud.google.com/go/firestore"
 	"context"
+	"dinamo.app/push_notification/repository"
 	"log"
-	"push_notification/repository"
 )
 
 type firestoreService struct {

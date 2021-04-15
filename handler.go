@@ -2,6 +2,8 @@ package push_notification
 
 import (
 	"context"
+	"dinamo.app/push_notification/response"
+	"dinamo.app/push_notification/service"
 	"encoding/json"
 	"errors"
 	firebase "firebase.google.com/go"
@@ -9,8 +11,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"push_notification/response"
-	"push_notification/service"
 	"sync"
 )
 
