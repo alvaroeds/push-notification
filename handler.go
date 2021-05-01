@@ -2,15 +2,12 @@ package push_notification
 
 import (
 	"context"
-	"dinamo.app/push_notification/response"
 	"dinamo.app/push_notification/service"
-	"encoding/json"
 	"errors"
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/messaging"
 	"fmt"
 	"log"
-	"net/http"
 	"sync"
 )
 
@@ -48,38 +45,18 @@ func init() {
 	}
 }
 
-func SendPushNotificaction(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "POST" {
-		_ = response.HTTPError(w, r, http.StatusBadRequest, "Metodo POST requerido")
-		return
-	}
-	ctx := r.Context()
-	data := struct {
-		UsersID []string                    `json:"users_id"`
-		Message *messaging.MulticastMessage `json:"message"`
-	}{}
-
-	err := json.NewDecoder(r.Body).Decode(&data)
-	if err != nil {
-		log.Println(err.Error())
-		_ = response.HTTPError(w, r, http.StatusBadRequest, err.Error())
-		return
-	}
-	defer r.Body.Close()
-
+func SendPushNotificaction(ctx context.Context, data *DataNotification) error {
 	if len(data.UsersID) == 0 {
-		err = errors.New("No procede la solicitud sin un UserID")
+		err := errors.New("No procede la solicitud sin un UserID")
 		log.Println(err)
-		_ = response.HTTPError(w, r, http.StatusBadRequest, err.Error())
-		return
+		return err
 	}
 
 	//toker organized by users
 	Utokens, err := s.GetTokensByUsers(ctx, data.UsersID)
 	if err != nil {
 		log.Println(err)
-		_ = response.HTTPError(w, r, http.StatusBadRequest, err.Error())
-		return
+		return err
 	}
 
 	wg.Add(len(Utokens))
@@ -97,12 +74,10 @@ func SendPushNotificaction(w http.ResponseWriter, r *http.Request) {
 	_, err = clientP.SendMulticast(ctx, data.Message)
 	if err != nil {
 		log.Println(err)
-		_ = response.HTTPError(w, r, http.StatusBadRequest, err.Error())
 	}
 
 	wg.Wait()
-	_ = response.HTTPError(w, r, http.StatusOK, "OK")
-	return
+	return err
 }
 
 func confirmAndUpdateSendMessage(tokens, tokens_ []string, user string) {
