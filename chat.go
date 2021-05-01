@@ -18,13 +18,16 @@ func MessageReciver(ctx context.Context, e FirestoreEvent) error {
 		return errors.New("SE REQUIERE UN ID MINIMO PARA ENVIAR NOTIFICACION")
 	}
 
-	image := ""
-	dataType := MESSAGE_TEXT
+	dataType := ""
 	type_, _ := strconv.Atoi(e.Value.Fields.Type_.IntegerValue)
-	if type_ == 2 {
+	switch type_ {
+	case 2:
 		dataType = MESSAGE_IMAGE
-		image = e.Value.Fields.Content.StringValue
-		e.Value.Fields.Content.StringValue = "Te envió una imagen."
+		if e.Value.Fields.Content.StringValue == "" {
+			e.Value.Fields.Content.StringValue = "Te envió una imagen."
+		}
+	default:
+		dataType = MESSAGE_TEXT
 	}
 
 	data := DataNotification{
@@ -40,7 +43,7 @@ func MessageReciver(ctx context.Context, e FirestoreEvent) error {
 			Notification: &messaging.Notification{
 				Title:    e.Value.Fields.NameFrom.StringValue,
 				Body:     e.Value.Fields.Content.StringValue,
-				ImageURL: image,
+				ImageURL: e.Value.Fields.Image.StringValue,
 			},
 		},
 	}
