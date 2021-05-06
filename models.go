@@ -31,12 +31,13 @@ type FirestoreValue struct {
 }
 
 type MyData struct {
-	Content  tipos `json:"content"`
-	Image    tipos `json:"image"`
-	IDFrom   tipos `json:"idFrom"`
-	IDTo     tipos `json:"idTo"`
-	NameFrom tipos `json:"nameFrom"`
-	Type_    tipos `json:"type"`
+	AvatarFrom tipos `json:"avatarFrom"`
+	Content    tipos `json:"content"`
+	Image      tipos `json:"image"`
+	IDFrom     tipos `json:"idFrom"`
+	IDTo       tipos `json:"idTo"`
+	NameFrom   tipos `json:"nameFrom"`
+	Type_      tipos `json:"type"`
 }
 
 type tipos struct {

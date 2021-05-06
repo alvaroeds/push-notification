@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	MESSAGE_TEXT = "MESSAGE_TEXT"
+	MESSAGE_TEXT  = "MESSAGE_TEXT"
 	MESSAGE_IMAGE = "MESSAGE_IMAGE"
 )
 
@@ -39,6 +39,7 @@ func MessageReciver(ctx context.Context, e FirestoreEvent) error {
 			Data: map[string]string{
 				"type":       dataType,
 				"id-contact": e.Value.Fields.IDFrom.StringValue,
+				"avatar":     e.Value.Fields.AvatarFrom.StringValue,
 			},
 			Notification: &messaging.Notification{
 				Title:    e.Value.Fields.NameFrom.StringValue,
