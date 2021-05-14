@@ -1,6 +1,7 @@
 package push_notification
 
 import (
+	"cloud.google.com/go/functions/metadata"
 	"context"
 	"fmt"
 	"strings"
@@ -21,7 +22,14 @@ func FriendsReciver(ctx context.Context, e FirestoreEvent) error {
 	fmt.Println(uidR)
 	fmt.Println(uidS)
 	fmt.Println(doc)
-	fmt.Println(ctx.Value("auth"))
+
+	meta, err := metadata.FromContext(ctx)
+	if err != nil {
+		return fmt.Errorf("metadata.FromContext: %v", err)
+	}
+	fmt.Println("//////")
+	fmt.Println(meta)
+
 
 	return nil
 }
