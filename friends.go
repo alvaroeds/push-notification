@@ -13,9 +13,9 @@ func FriendsReciver(ctx context.Context, e FirestoreEvent) error {
 	doc := strings.Join(pathParts[1:], "/")
 
 	uidReciver := ctx.Value("uidReciver")
-	idR, _ := uidReciver.(string)
+	//idR, _ := uidReciver.(string)
 	uidSender := ctx.Value("uidSender")
-	idS, _ := uidSender.(string)
+	//idS, _ := uidSender.(string)
 	//if !ok {
 	//	return er
 	//}
@@ -23,11 +23,12 @@ func FriendsReciver(ctx context.Context, e FirestoreEvent) error {
 
 
 	fmt.Println(e)
+	fmt.Println(fullPath)
 	fmt.Println(collection)
 	fmt.Println(doc)
 	fmt.Println("///")
-	fmt.Println(idR)
-	fmt.Println(idS)
+	fmt.Println(uidReciver)
+	fmt.Println(uidSender)
 
 	return nil
 }
