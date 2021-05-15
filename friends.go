@@ -28,7 +28,8 @@ func FriendsReciver(ctx context.Context, e FirestoreEvent) error {
 		return fmt.Errorf("metadata.FromContext: %v", err)
 	}
 	fmt.Println("//////")
-	fmt.Println(meta)
+	fmt.Println(*meta.Resource)
+
 
 
 	return nil
