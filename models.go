@@ -38,6 +38,11 @@ type MyData struct {
 	IDTo       tipos `json:"idTo"`
 	NameFrom   tipos `json:"nameFrom"`
 	Type_      tipos `json:"type"`
+
+	//Friends
+	Name     tipos `json:"name"`
+	Photo    tipos `json:"photoUrlMin"`
+	Nickname tipos `json:"nickname"`
 }
 
 type tipos struct {

@@ -1,36 +1,54 @@
 package push_notification
 
 import (
-	"cloud.google.com/go/functions/metadata"
 	"context"
-	"fmt"
+	"firebase.google.com/go/messaging"
+	"log"
 	"strings"
+)
+
+const (
+	SOLICITUD_ADD_CONTACT = "SOLICITUD_ADD_CONTACT"
 )
 
 func FriendsReciver(ctx context.Context, e FirestoreEvent) error {
 	fullPath := strings.Split(e.Value.Name, "/documents/")[1]
 	pathParts := strings.Split(fullPath, "/")
-	collection := pathParts[0]
+	//collection := pathParts[0]
 	uidR := pathParts[1]
 	uidS := pathParts[3]
-	doc := strings.Join(pathParts[1:], "/")
+	//doc := strings.Join(pathParts[1:], "/")
 
-	fmt.Println(e)
-	fmt.Println(fullPath)
-	fmt.Println(pathParts)
-	fmt.Println(collection)
-	fmt.Println(uidR)
-	fmt.Println(uidS)
-	fmt.Println(doc)
-
-	meta, err := metadata.FromContext(ctx)
-	if err != nil {
-		return fmt.Errorf("metadata.FromContext: %v", err)
+	name := e.Value.Fields.Name.StringValue
+	if name == "" {
+		name = e.Value.Fields.Nickname.StringValue
 	}
-	fmt.Println("//////")
-	fmt.Println(*meta.Resource)
+	body := string(name + " quiere ser parte de tu red Dinamo")
 
+	data := DataNotification{
+		UsersID: []string{
+			uidR,
+		},
+		Message: &messaging.MulticastMessage{
+			Tokens: nil,
+			Data: map[string]string{
+				"type":      SOLICITUD_ADD_CONTACT,
+				"id-sender": uidS,
+				"avatar":    e.Value.Fields.Photo.StringValue,
+			},
+			Notification: &messaging.Notification{
+				Title:    "Nueva Solicitud de amistad",
+				Body:     body,
+				ImageURL: e.Value.Fields.Photo.StringValue,
+			},
+		},
+	}
 
+	err := SendPushNotificaction(ctx, &data)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
 
 	return nil
 }
