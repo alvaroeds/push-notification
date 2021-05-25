@@ -33,7 +33,7 @@ func FriendsReciver(ctx context.Context, e FirestoreEvent) error {
 			Tokens: nil,
 			Data: map[string]string{
 				"type":      SOLICITUD_ADD_CONTACT,
-				"id-sender": uidS,
+				"id_sender": uidS,
 				"avatar":    e.Value.Fields.Photo.StringValue,
 			},
 			Notification: &messaging.Notification{

@@ -18,7 +18,7 @@ func HandlerSendPushNotificaction(w http.ResponseWriter, r *http.Request) {
 	//
 	meta, err := metadata.FromContext(ctx)
 	if err != nil {
-		fmt.Println("error: ",err)
+		fmt.Println("error: ", err)
 	}
 	fmt.Println(meta)
 	fmt.Println(ctx)
