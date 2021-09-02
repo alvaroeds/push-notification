@@ -2,6 +2,7 @@ package push_notification
 
 import (
 	"context"
+	"dinamo.app/push_notification/hms"
 	"dinamo.app/push_notification/service"
 	"errors"
 	firebase "firebase.google.com/go"
@@ -14,13 +15,14 @@ import (
 // GOOGLE_CLOUD_PROJECT is automatically set by the Cloud Functions runtime.
 var projectID = "dinamo-fa84e"
 var s service.Service
+var sh hms.Service
 var clientP *messaging.Client
 var wg sync.WaitGroup
 
 func init() {
 	// Use the application default credentials.
 	conf := &firebase.Config{ProjectID: projectID}
-	//opt := option.WithCredentialsFile("./dinamo-fa84e-firebase-adminsdk-o6dr2-390cdf4656.json")
+	//opt := option.WithCredentialsFile("./dinamo-app-firebase-adminsdk-ysahe-451888d534.json")
 
 	// Use context.Background() because the app/clientF should persist across
 	// invocations.
@@ -37,6 +39,9 @@ func init() {
 		log.Fatalf("app.Firestore: %v", err)
 	}
 	s = service.NewService(f)
+
+	//hms
+	sh = hms.NewService(f)
 
 	// Obtain a messaging.Client from the App.
 	clientP, err = app.Messaging(ctx)

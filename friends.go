@@ -35,16 +35,23 @@ func FriendsReciver(ctx context.Context, e FirestoreEvent) error {
 				"type":      SOLICITUD_ADD_CONTACT,
 				"id_sender": uidS,
 				"avatar":    e.Value.Fields.Photo.StringValue,
+				"body":      body,
 			},
-			Notification: &messaging.Notification{
-				Title:    "Nueva Solicitud de amistad",
-				Body:     body,
-				ImageURL: e.Value.Fields.Photo.StringValue,
-			},
+			//Notification: &messaging.Notification{
+			//Title:    "Nueva Solicitud de amistad",
+			//Body:     body,
+			//ImageURL: e.Value.Fields.Photo.StringValue,
+			//},
 		},
 	}
 
 	err := SendPushNotificaction(ctx, &data)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	err = HmsSendPushNotificaction(ctx, &data)
 	if err != nil {
 		log.Println(err)
 		return err

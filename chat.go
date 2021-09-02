@@ -50,16 +50,25 @@ func MessageReciver(ctx context.Context, e FirestoreEvent) error {
 				"uid_contact": e.Value.Fields.IDFrom.StringValue,
 				"avatar":      e.Value.Fields.AvatarFrom.StringValue,
 				"id_message":  pathParts[3],
+				"body":        e.Value.Fields.Content.StringValue,
+				"title":       e.Value.Fields.NameFrom.StringValue,
+				"imageURL":    e.Value.Fields.Image.StringValue,
 			},
-			Notification: &messaging.Notification{
-				Title:    e.Value.Fields.NameFrom.StringValue,
-				Body:     e.Value.Fields.Content.StringValue,
-				ImageURL: e.Value.Fields.Image.StringValue,
-			},
+			//Notification: &messaging.Notification{
+			//Title:    e.Value.Fields.NameFrom.StringValue,
+			//Body:     e.Value.Fields.Content.StringValue,
+			//ImageURL: e.Value.Fields.Image.StringValue,
+			//},
 		},
 	}
 
 	err := SendPushNotificaction(ctx, &data)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	err = HmsSendPushNotificaction(ctx, &data)
 	if err != nil {
 		log.Println(err)
 		return err

@@ -6,5 +6,6 @@ require (
 	cloud.google.com/go v0.81.0
 	cloud.google.com/go/firestore v1.5.0
 	firebase.google.com/go v3.13.0+incompatible
+	go.uber.org/zap v1.19.0
 	google.golang.org/api v0.44.0
 )
