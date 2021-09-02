@@ -68,11 +68,11 @@ func MessageReciver(ctx context.Context, e FirestoreEvent) error {
 		return err
 	}
 
-	err = HmsSendPushNotificaction(ctx, &data)
-	if err != nil {
-		log.Println(err)
-		return err
-	}
+	//err = HmsSendPushNotificaction(ctx, &data)
+	//if err != nil {
+	//	log.Println(err)
+	//	return err
+	//}
 
 	return nil
 }
