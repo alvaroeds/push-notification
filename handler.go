@@ -13,7 +13,7 @@ import (
 )
 
 // GOOGLE_CLOUD_PROJECT is automatically set by the Cloud Functions runtime.
-var projectID = "dinamo-fa84e"
+var projectID = "dinamo-app"
 var s service.Service
 var sh hms.Service
 var clientP *messaging.Client
