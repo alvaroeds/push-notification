@@ -36,6 +36,7 @@ func FriendsReciver(ctx context.Context, e FirestoreEvent) error {
 				"id_sender": uidS,
 				"avatar":    e.Value.Fields.Photo.StringValue,
 				"body":      body,
+				"title":     "Nueva Solicitud de amistad",
 			},
 			//Notification: &messaging.Notification{
 			//Title:    "Nueva Solicitud de amistad",
